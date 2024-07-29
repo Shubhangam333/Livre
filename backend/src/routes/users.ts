@@ -1,8 +1,8 @@
 import { Router } from "express";
-// import { updateUser, getUserByFirebaseId } from "../controllers/users";
 import { multerUpload } from "../middleware/multerMiddleware";
 import { processImageUpload } from "../middleware/processImageUpload";
 import { authMiddleware } from "../middleware/authMiddleware";
+import { profile } from "../controllers/users";
 
 const router = Router();
 router.patch(
@@ -12,4 +12,5 @@ router.patch(
   processImageUpload
 );
 router.get("/:id", authMiddleware);
+router.get("/profile", authMiddleware, profile);
 export default router;

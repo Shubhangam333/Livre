@@ -12,7 +12,7 @@ yup.addMethod(yup.string, "email", function validateEmail(message) {
   });
 });
 
-const password = {
+const SignUpPassword = {
   password: yup
     .string()
     .required("Password is missing")
@@ -20,8 +20,17 @@ const password = {
     .matches(passwordRegex, "Password is too simple."),
 };
 
-export const newUserSchema = yup.object({
+const SignInPassword = {
+  password: yup.string().required("Password is missing"),
+};
+
+export const SignUpInputSchema = yup.object({
   name: yup.string().required("Name is missing"),
   email: yup.string().email("Invalid email!").required("Email is missing"),
-  ...password,
+  ...SignUpPassword,
+});
+
+export const SignInInputSchema = yup.object({
+  email: yup.string().email("Invalid email!").required("Email is missing"),
+  ...SignInPassword,
 });

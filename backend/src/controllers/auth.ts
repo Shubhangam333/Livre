@@ -1,21 +1,36 @@
 import { NextFunction, Request, Response } from "express";
 import { TryCatch } from "../middleware/error";
 import ErrorHandler from "../utils/helper";
-import { userService } from "../services/authService";
-import { SignUpInput } from "../types/input";
+import { SignInInput, SignUpInput } from "../types/input";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth";
-import bcrypt from "bcrypt";
+import bcrypt, { genSalt, hash } from "bcrypt";
+import jwt from "jsonwebtoken";
+import prisma from "../config/prisma-client";
 
 export const register = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, name } = req.body as SignUpInput;
-    const isExist = await userService.findUserByEmail(email);
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
 
-    if (isExist) {
+    if (user) {
       return next(new ErrorHandler("Email Already Exist", 400));
     }
     const isAdmin = req.body.isAdmin ? true : false;
-    await userService.createUser(name, email, password, isAdmin);
+    const role = isAdmin ? "ADMIN" : "USER";
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(password, salt);
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role,
+      },
+    });
 
     res.status(201).json({ msg: "Account created" });
   }
@@ -23,9 +38,13 @@ export const register = TryCatch(
 
 export const login = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body as SignInInput;
 
-    const user = await userService.findUserByEmail(email);
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
     if (!user) {
       return next(new ErrorHandler("Invalid email or password", 401));
     }
@@ -35,8 +54,8 @@ export const login = TryCatch(
       return next(new ErrorHandler("Invalid email or password", 401));
     }
 
-    const accessToken = generateAccessToken(user.id.toString());
-    const refreshToken = generateRefreshToken(user.id.toString());
+    const accessToken = generateAccessToken(user.id);
+    const refreshToken = generateRefreshToken(user.id);
 
     res.status(200).json({
       profile: {
@@ -49,5 +68,38 @@ export const login = TryCatch(
       },
       tokens: { accessToken, refreshToken },
     });
+  }
+);
+
+export const grantAccessToken = TryCatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return next(new ErrorHandler("Authorization is required", 404));
+    }
+
+    const payload = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    ) as { userId: string };
+
+    if (!payload.userId)
+      return next(new ErrorHandler("Unauthorized Request", 401));
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: Number(payload.userId),
+      },
+    });
+
+    if (!user) return next(new ErrorHandler("Unauthorized Request", 401));
+
+    const newAccessToken = generateAccessToken(user.id);
+    const newRefreshToken = generateRefreshToken(user.id);
+
+    res
+      .status(200)
+      .json({ tokens: { refresh: newRefreshToken, access: newAccessToken } });
   }
 );
