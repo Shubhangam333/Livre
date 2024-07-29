@@ -7,7 +7,9 @@
     "build": "npx tsc",
     "dev": "nodemon src/server.ts",
     "db:migrate": "npx prisma migrate dev --name user-entity --create-only && npx prisma generate",
-    "db:push": "npx prisma db push"
+    "db:push": "npx prisma db push",
+    "frontend": "npm run dev --prefix ../frontend",
+    "local": "concurrently -k \"npm run dev\" \"npm run frontend\""
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,7 @@
     "@prisma/client": "^5.17.0",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.3.1",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

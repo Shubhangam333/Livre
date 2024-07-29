@@ -32,8 +32,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // API Routes
-app.use("/auth", authRoutes);
-app.use("/users", usersRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
 
 app.use(errorMiddleware);
 
