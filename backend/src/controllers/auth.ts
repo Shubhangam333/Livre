@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { TryCatch } from "../middleware/error";
 import ErrorHandler from "../utils/helper";
-import { userService } from "../services/userService";
+import { userService } from "../services/authService";
 import { SignUpInput } from "../types/input";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth";
 import bcrypt from "bcrypt";
