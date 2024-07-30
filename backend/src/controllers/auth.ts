@@ -10,7 +10,7 @@ import prisma from "../config/prisma-client";
 export const register = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, name } = req.body as SignUpInput;
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -32,7 +32,7 @@ export const register = TryCatch(
       },
     });
 
-    res.status(201).json({ msg: "Account created" });
+    res.status(201).json({ success: true, message: "Account created" });
   }
 );
 
@@ -58,15 +58,8 @@ export const login = TryCatch(
     const refreshToken = generateRefreshToken(user.id);
 
     res.status(200).json({
-      profile: {
-        id: user.id,
-        role: user.role,
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-      tokens: { accessToken, refreshToken },
+      accessToken,
+      refreshToken,
     });
   }
 );
@@ -85,7 +78,7 @@ export const grantAccessToken = TryCatch(
     ) as { userId: string };
 
     if (!payload.userId)
-      return next(new ErrorHandler("Unauthorized Request", 401));
+      return next(new ErrorHandler("Unauthorized Request", 404));
 
     const user = await prisma.user.findUnique({
       where: {
@@ -98,8 +91,9 @@ export const grantAccessToken = TryCatch(
     const newAccessToken = generateAccessToken(user.id);
     const newRefreshToken = generateRefreshToken(user.id);
 
-    res
-      .status(200)
-      .json({ tokens: { refresh: newRefreshToken, access: newAccessToken } });
+    res.status(200).json({
+      success: true,
+      tokens: { refreshToken: newRefreshToken, accessToken: newAccessToken },
+    });
   }
 );

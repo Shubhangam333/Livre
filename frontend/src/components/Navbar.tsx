@@ -2,9 +2,16 @@ import React from "react";
 import logo from "/logo.png";
 import Logo from "../ui/Logo";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { setIsLoggedIn, isLoggedIn } = useAppContext();
+
+  const handleLogout = () => {
+    localStorage.removeItem("tokens");
+    setIsLoggedIn(false);
+  };
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 navbar-start">
@@ -18,12 +25,6 @@ const Navbar: React.FC = () => {
         />
       </div>
       <div className="flex-1 navbar-end flex gap-2 items-center">
-        <a
-          className="btn btn-primary w-24 rounded-lg"
-          onClick={() => navigate("/signin")}
-        >
-          Login
-        </a>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
@@ -57,37 +58,47 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
+        {!isLoggedIn && (
+          <a
+            className="btn btn-primary w-24 rounded-lg"
+            onClick={() => navigate("/signin")}
           >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+            Login
+          </a>
+        )}
+        {isLoggedIn && (
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                />
+              </div>
             </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li onClick={handleLogout}>
+                <a>Logout</a>
+              </li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // API Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", usersRoutes);
+app.use("/api/user", usersRoutes);
 
 app.use(errorMiddleware);
 

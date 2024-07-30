@@ -4,15 +4,32 @@ import React, {
   FormEventHandler,
   useState,
 } from "react";
-import { FormData } from "../types";
+import { RegisterFormData } from "../types";
 import { newUserSchema, yupValidate } from "../utils/validator";
 import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import * as apiClient from "../api-client";
+import { useNavigate } from "react-router-dom";
+import { showErrorMessage } from "../utils/showErrorMessage";
 
 const Register: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     email: "",
     password: "",
+  });
+
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: (data: RegisterFormData) => apiClient.register(data),
+    onSuccess: async (d) => {
+      toast.success(d.message);
+      navigate("/signin");
+    },
+    onError: (error: Error) => {
+      showErrorMessage(error);
+    },
   });
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
     event: FormEvent<HTMLFormElement>
@@ -22,6 +39,10 @@ const Register: React.FC = () => {
     const { values, error } = await yupValidate(newUserSchema, formData);
 
     if (error) return toast.error(error);
+
+    if (values) {
+      mutation.mutate(values);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

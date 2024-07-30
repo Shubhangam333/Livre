@@ -15,13 +15,13 @@ export const Role: {
 };
 
 export type Role = (typeof Role)[keyof typeof Role];
-export interface Avatar {
+export type Avatar = {
   id: number;
   url: string;
   userId: number;
   user?: User; // This will be a relation to User
-}
-export interface User {
+};
+export type User = {
   id: number;
   name: string;
   email: string;
@@ -30,4 +30,4 @@ export interface User {
   avatar?: Avatar; // This is an optional property
   createdAt: Date;
   updatedAt: Date;
-}
+};

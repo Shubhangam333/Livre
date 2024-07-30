@@ -18,13 +18,14 @@ declare global {
 export const authMiddleware = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
-      return next(new ErrorHandler("Authorization is required", 404));
+      return next(new ErrorHandler("Authorization is required", 401));
     }
     const accessToken = authHeader.split(" ")[1];
 
     if (!accessToken) {
-      return next(new ErrorHandler("Authorization is required", 404));
+      return next(new ErrorHandler("Authorization is required", 401));
     }
 
     const payload = jwt.verify(
