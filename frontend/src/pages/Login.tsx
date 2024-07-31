@@ -27,17 +27,18 @@ const Login: React.FC = () => {
   const mutation = useMutation({
     mutationFn: (data: LoginFormData) => apiClient.login(data),
     onSuccess: async (d) => {
-      toast.success("Login Successfull.");
+      toast.success("Login Successfull");
       localStorage.setItem("tokens", JSON.stringify(d));
       setHeaderToken(d.accessToken);
       setTokens(d);
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       navigate("/");
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       showErrorMessage(error);
     },
   });
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
     event: FormEvent<HTMLFormElement>
   ) => {

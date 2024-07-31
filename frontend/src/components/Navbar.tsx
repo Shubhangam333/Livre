@@ -6,12 +6,14 @@ import { useAppContext } from "../contexts/AppContext";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, isLoggedIn } = useAppContext();
+  const { setUser, isLoggedIn } = useAppContext();
 
   const handleLogout = () => {
     localStorage.removeItem("tokens");
-    setIsLoggedIn(false);
+    localStorage.removeItem("user");
+    setUser(null);
   };
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 navbar-start">

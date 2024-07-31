@@ -46,12 +46,12 @@ export const login = TryCatch(
       },
     });
     if (!user) {
-      return next(new ErrorHandler("Invalid email or password", 401));
+      return next(new ErrorHandler("Invalid email or password", 400));
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return next(new ErrorHandler("Invalid email or password", 401));
+      return next(new ErrorHandler("Invalid email or password", 400));
     }
 
     const accessToken = generateAccessToken(user.id);
