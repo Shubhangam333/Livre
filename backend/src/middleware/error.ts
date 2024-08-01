@@ -15,7 +15,6 @@ export const errorMiddleware = (
   if (err.name === "PrismaClientKnownRequestError")
     err.message = "Prisma Error";
   if (err.name == "TokenExpiredError") {
-    console.log("he");
     err.statusCode = 401;
   }
 

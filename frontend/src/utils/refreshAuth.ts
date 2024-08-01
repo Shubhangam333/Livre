@@ -34,6 +34,7 @@ export const refreshAuth = async (failedRequest: any) => {
     // router.push("/login");
 
     localStorage.removeItem("tokens");
+    localStorage.removeItem("user");
     return Promise.reject();
   }
 };

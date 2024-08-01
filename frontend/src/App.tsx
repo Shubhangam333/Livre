@@ -9,21 +9,30 @@ import Store from "./pages/Store";
 import PrivateRoute from "./components/routes/PrivateRoute";
 // import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import { useAppContext } from "./contexts/AppContext";
+import Loading from "./ui/Loader";
 function App() {
+  const { loading } = useAppContext();
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
-        <Route path="/store" element={<Store />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-      </Routes>
-      <Footer />
-    </Router>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signin" element={<Login />} />
+            <Route path="/signup" element={<Register />} />
+            <Route path="/store" element={<Store />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+          </Routes>
+          <Footer />
+        </Router>
+      )}
+    </>
   );
 }
 
