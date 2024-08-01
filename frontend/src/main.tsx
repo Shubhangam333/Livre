@@ -24,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <App />
           <ToastContainer />
         </div>
+
         <ReactQueryDevtools initialIsOpen={false} />
       </AppContextProvider>
     </QueryClientProvider>

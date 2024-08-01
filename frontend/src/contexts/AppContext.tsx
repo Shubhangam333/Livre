@@ -26,7 +26,7 @@ export const AppContextProvider = ({
     storedUser ? JSON.parse(storedUser) : null
   );
 
-  const { data, isLoading, isFetching, error } = useQuery({
+  const { data, isLoading, error } = useQuery<User>({
     queryKey: ["profile"],
     queryFn: apiClient.profile,
     retry: false,

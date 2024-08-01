@@ -3,6 +3,7 @@ import logo from "/logo.png";
 import Logo from "../ui/Logo";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
+import hamburger from "/hamburger.svg";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -87,13 +88,10 @@ const Navbar: React.FC = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <a className="justify-between" href="/profile">
                   Profile
                   <span className="badge">New</span>
                 </a>
-              </li>
-              <li>
-                <a>Settings</a>
               </li>
               <li onClick={handleLogout}>
                 <a>Logout</a>
@@ -101,6 +99,18 @@ const Navbar: React.FC = () => {
             </ul>
           </div>
         )}
+        <label
+          htmlFor="my-drawer-2"
+          className="btn btn-primary drawer-button lg:hidden w-12 h-6 rounded-full"
+        >
+          <picture className="block w-6 h-6">
+            <img
+              src={hamburger}
+              alt="logo"
+              className="w-full h-full object-cover"
+            />
+          </picture>
+        </label>
       </div>
     </div>
   );

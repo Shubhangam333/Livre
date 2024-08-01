@@ -32,6 +32,7 @@ export const refreshAuth = async (failedRequest: any) => {
   } else {
     // we can redirect to login page here
     // router.push("/login");
+
     localStorage.removeItem("tokens");
     return Promise.reject();
   }
