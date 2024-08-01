@@ -9,6 +9,10 @@ export interface LoginFormData {
   email: string;
   password: string;
 }
+export interface EditProfileFormData {
+  email: string;
+  name: string;
+}
 
 export const Role: {
   USER: "USER";

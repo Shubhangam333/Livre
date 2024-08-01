@@ -30,15 +30,13 @@ export const AppContextProvider = ({
     storedUser ? JSON.parse(storedUser) : null
   );
 
-  const { data, isLoading, error, isError } = useQuery<User>({
+  const { data, isLoading, isError } = useQuery<User>({
     queryKey: ["profile"],
     queryFn: apiClient.profile,
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!tokens,
   });
-
-  console.log(isLoading, error, data, isError);
 
   useEffect(() => {
     const storedTokens = localStorage.getItem("tokens");

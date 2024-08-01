@@ -28,7 +28,7 @@ yup.addMethod(yup.string, "email", function validateEmail(message) {
   });
 });
 
-const nameAndEmailValidation = {
+const PasswordAndEmailValidation = {
   email: yup.string().email("Invalid email!").required("Email is missing"),
   password: yup
     .string()
@@ -38,9 +38,14 @@ const nameAndEmailValidation = {
 
 export const newUserSchema = yup.object({
   name: yup.string().required("Name is missing"),
-  ...nameAndEmailValidation,
+  ...PasswordAndEmailValidation,
 });
 
 export const signInSchema = yup.object({
-  ...nameAndEmailValidation,
+  ...PasswordAndEmailValidation,
+});
+
+export const EditProfileSchema = yup.object({
+  name: yup.string().required("Name is missing"),
+  email: yup.string().email("Invalid email!").required("Email is missing"),
 });
