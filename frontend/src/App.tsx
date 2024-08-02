@@ -11,6 +11,8 @@ import PrivateRoute from "./components/routes/PrivateRoute";
 import Profile from "./pages/Profile";
 import { useAppContext } from "./contexts/AppContext";
 import Loading from "./ui/Loader";
+import AdminPrivateRoute from "./components/routes/AdminPrivateRoute";
+import Dashboard from "./pages/Dashboard";
 function App() {
   const { loading } = useAppContext();
   return (
@@ -27,6 +29,9 @@ function App() {
             <Route path="/store" element={<Store />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route element={<AdminPrivateRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
             </Route>
           </Routes>
           <Footer />
