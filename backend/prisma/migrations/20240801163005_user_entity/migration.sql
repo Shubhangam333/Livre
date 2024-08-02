@@ -14,11 +14,13 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `Avatar` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `public_id` VARCHAR(191) NOT NULL,
     `url` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Avatar_userId_key`(`userId`)
+    UNIQUE INDEX `Avatar_userId_key`(`userId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

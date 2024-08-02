@@ -14,6 +14,10 @@ export interface EditProfileFormData {
   name: string;
 }
 
+export interface EditAvatarFormData {
+  avatar: File;
+}
+
 export const Role: {
   USER: "USER";
   ADMIN: "ADMIN";
@@ -25,9 +29,9 @@ export const Role: {
 export type Role = (typeof Role)[keyof typeof Role];
 export type Avatar = {
   id: number;
+  public_id: string;
   url: string;
-  userId: number;
-  user?: User; // This will be a relation to User
+  userId: number; // This will be a relation to User
 };
 
 export type Tokens = {
@@ -41,7 +45,7 @@ export type User = {
   email: string;
   password: string;
   role: Role;
-  avatar?: Avatar; // This is an optional property
+  avatar?: Avatar | null; // This is an optional property
   createdAt: Date;
   updatedAt: Date;
 };

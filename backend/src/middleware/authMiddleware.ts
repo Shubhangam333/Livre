@@ -3,7 +3,7 @@ import { TryCatch } from "./error";
 import ErrorHandler from "../utils/helper";
 import prisma from "../config/prisma-client";
 import jwt from "jsonwebtoken";
-import { User } from "../types/types";
+import { AvatarImage, User } from "../types/types";
 
 export {};
 
@@ -11,6 +11,7 @@ declare global {
   namespace Express {
     interface Request {
       user: User;
+      avatar: AvatarImage;
     }
   }
 }
@@ -40,6 +41,7 @@ export const authMiddleware = TryCatch(
       where: {
         id: Number(payload.userId),
       },
+      include: { avatar: true },
     });
     req.user = user!;
     next();

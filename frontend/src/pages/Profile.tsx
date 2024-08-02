@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserProfile from "../components/UserProfile";
 import { Link, useLocation } from "react-router-dom";
+import UserAvatar from "../components/UserAvatar";
 
 const Profile: React.FC = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const Profile: React.FC = () => {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center">
         {tab == "user" && <UserProfile />}
+        {tab == "avatar" && <UserAvatar />}
       </div>
       <div className="drawer-side">
         <label
@@ -33,7 +35,7 @@ const Profile: React.FC = () => {
             <Link to="/profile?tab=user">Profile</Link>
           </li>
           <li>
-            <Link to="/profile?tab=orders">Orders</Link>
+            <Link to="/profile?tab=avatar">Avatar</Link>
           </li>
         </ul>
       </div>

@@ -7,7 +7,7 @@ import hamburger from "/hamburger.svg";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { setUser, isLoggedIn } = useAppContext();
+  const { setUser, isLoggedIn, user } = useAppContext();
 
   const handleLogout = () => {
     localStorage.removeItem("tokens");
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
         {!isLoggedIn && (
           <a
             className="btn btn-primary w-24 rounded-lg"
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate("/sign-in")}
           >
             Login
           </a>
@@ -77,10 +77,17 @@ const Navbar: React.FC = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                {user?.avatar ? (
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src={user.avatar.url}
+                  />
+                ) : (
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  />
+                )}
               </div>
             </div>
             <ul

@@ -12,8 +12,10 @@ export const errorMiddleware = (
   err.statusCode ||= 500;
 
   if (err.name === "CastError") err.message = "Invalid ID";
-  if (err.name === "PrismaClientKnownRequestError")
+  if (err.name === "PrismaClientKnownRequestError") {
     err.message = "Prisma Error";
+  }
+
   if (err.name == "TokenExpiredError") {
     err.statusCode = 401;
   }

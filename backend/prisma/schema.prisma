@@ -19,10 +19,11 @@ model User {
 }
 
 model Avatar {
-  id        Int    
-  url       String   
-  userId    Int     @unique
-  user      User    @relation(fields: [userId], references: [id])
+  id         Int     @id @default(autoincrement())
+  public_id  String 
+  url        String   
+  userId     Int     @unique
+  user       User    @relation(fields: [userId], references: [id])
 }
 
 enum Role {

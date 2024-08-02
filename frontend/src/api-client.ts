@@ -5,6 +5,7 @@ import {
   RegisterFormData,
   Tokens,
   EditProfileFormData,
+  EditAvatarFormData,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -36,6 +37,21 @@ export const updateProfile = async (
   const response = await client.put<ApiResponseType>(
     "/user/update-profile",
     formData
+  );
+
+  return response.data;
+};
+export const updateAvatar = async (
+  formData: EditAvatarFormData
+): Promise<ApiResponseType> => {
+  const response = await client.put<ApiResponseType>(
+    "/user/update-avatar",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
 
   return response.data;

@@ -25,7 +25,7 @@ const Register: React.FC = () => {
     mutationFn: (data: RegisterFormData) => apiClient.register(data),
     onSuccess: async (d) => {
       toast.success(d.message);
-      navigate("/signin");
+      navigate("/sign-in");
     },
     onError: (error: Error) => {
       showErrorMessage(error);

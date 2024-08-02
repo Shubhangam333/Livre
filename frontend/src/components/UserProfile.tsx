@@ -4,7 +4,6 @@ import React, {
   FormEventHandler,
   useState,
 } from "react";
-import { useAppContext } from "../contexts/AppContext";
 import { EditProfileFormData } from "../types";
 import { toast } from "react-toastify";
 import { EditProfileSchema, yupValidate } from "../utils/validator";
@@ -12,9 +11,10 @@ import { useMutation } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 import { showErrorMessage } from "../utils/showErrorMessage";
 import { queryClient } from "../main";
+import { useProfile } from "../hooks/useProfile";
 
 const UserProfile: React.FC = () => {
-  const { user } = useAppContext();
+  const { data: user } = useProfile();
 
   const [formData, setFormData] = useState<EditProfileFormData>({
     name: user?.name || "",
@@ -68,6 +68,7 @@ const UserProfile: React.FC = () => {
           <h1 className="text-4xl text-center">
             {user.name.toUpperCase()} Profile
           </h1>
+
           <label className="input input-bordered flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
