@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import authRoutes from "./routes/auth";
 import usersRoutes from "./routes/users";
+import productRoutes from "./routes/product";
+import reviewRoutes from "./routes/review";
+import orderRoutes from "./routes/order";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import { errorMiddleware } from "./middleware/error";
@@ -29,11 +32,14 @@ cloudinary.config({
 app.use(morgan("dev"));
 app.use(express.static("src/public"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", usersRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/product", orderRoutes);
+app.use("/api/product", reviewRoutes);
 
 app.use(errorMiddleware);
 

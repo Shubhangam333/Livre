@@ -36,3 +36,10 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type ProductImages = {
+  id: string;
+  public_id: string;
+  secure_url: string;
+  productId: number;
+};

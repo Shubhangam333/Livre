@@ -4,7 +4,7 @@ import {
   SignUpInputSchema,
   SignInInputSchema,
 } from "../utils/validationSchema";
-import validate from "../middleware/validator";
+import { validate } from "../middleware/validator";
 const router = Router();
 
 router.post("/sign-up", validate(SignUpInputSchema), register);

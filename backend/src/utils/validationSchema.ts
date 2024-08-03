@@ -34,3 +34,14 @@ export const SignInInputSchema = yup.object({
   email: yup.string().email("Invalid email!").required("Email is missing"),
   ...SignInPassword,
 });
+
+export const productInputValidatorSchema = yup.object().shape({
+  title: yup.string().required().max(255),
+  description: yup.string().required(),
+  price: yup.number().required().positive(),
+  rating: yup.number().min(0).max(5).nullable(),
+  publisher: yup.string().required().max(255),
+  author: yup.string().required().max(255),
+  stock: yup.number().required().min(0),
+  genreId: yup.number().required(),
+});

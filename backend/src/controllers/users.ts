@@ -88,3 +88,15 @@ export const updateAvatar = TryCatch(
     });
   }
 );
+export const getUserOrders = TryCatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+
+    const orders = await prisma.order.findMany({
+      where: { userId },
+      include: { items: true, orderStatus: true, address: true },
+    });
+
+    res.status(200).json({ success: true, orders });
+  }
+);

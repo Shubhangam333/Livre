@@ -14,6 +14,8 @@ model User {
   password   String
   role       Role    @default(USER)
   avatar     Avatar?
+  reviews    Review[]
+  user       Order[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -29,4 +31,112 @@ model Avatar {
 enum Role {
   USER
   ADMIN
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  title       String        @unique
+  description String        @db.Text
+  price       Float
+  images      ProductImages[]
+  rating      Float?
+  reviews     Review[]
+  publisher   String
+  author      String
+  orderItem  OrderItem[]
+  stock       Int
+  genreId     Int           
+  genre       Genre         @relation(fields: [genreId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Review {
+  id         Int       @id @default(autoincrement())
+  comment    String
+  userId     Int       @unique
+  user       User      @relation(fields: [userId], references: [id])
+  productId  Int       @unique
+  product    Product   @relation(fields: [productId], references: [id])
+  rating     Float?
+}
+
+model Genre {
+  id       Int       @id @default(autoincrement())
+  name     String
+  product  Product[]
+}
+
+model ProductImages {
+  id         Int       @id @default(autoincrement())
+  public_id  String
+  secure_url String
+  productId  Int       
+  product    Product   @relation(fields: [productId], references: [id])
+}
+
+
+model Order {
+  id            Int            @id @default(autoincrement())
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id])
+  totalAmount   Float
+  paymentStatus PaymentStatus
+  paymentType   PaymentType
+  couponCode    String?        @default("")
+  couponValue   Float?         @default(0)
+  addressId     Int?
+  address       Address?       @relation(fields: [addressId], references: [id])
+  items         OrderItem[]
+  orderStatus   OrderStatus[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model OrderItem {
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  order         Order    @relation(fields: [orderId], references: [id])
+  productId     Int
+  product       Product  @relation(fields: [productId], references: [id])
+  payablePrice  Float
+  purchasedQty  Int
+}
+
+model OrderStatus {
+  id          Int       @id @default(autoincrement())
+  orderId     Int
+  order       Order     @relation(fields: [orderId], references: [id])
+  type        StatusType
+  date        DateTime  @default(now())
+  isCompleted Boolean   @default(false)
+}
+
+model Address {
+  id       Int       @id @default(autoincrement())
+  street   String
+  city     String
+  state    String
+  zipCode  String
+  country  String
+  orders   Order[]
+}
+
+enum PaymentStatus {
+  pending
+  succeeded
+  cancelled
+  refund
+}
+
+enum PaymentType {
+  cod
+  card
+}
+
+enum StatusType {
+  ordered
+  packed
+  shipped
+  delivered
 }

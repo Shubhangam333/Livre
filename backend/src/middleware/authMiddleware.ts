@@ -47,3 +47,17 @@ export const authMiddleware = TryCatch(
     next();
   }
 );
+
+export const checkAdminRole = TryCatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return next(new ErrorHandler("Unauthorized Request", 401));
+    }
+
+    if (req.user.role !== "ADMIN") {
+      return next(new ErrorHandler("You do not have access", 403));
+    }
+
+    next();
+  }
+);
