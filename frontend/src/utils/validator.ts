@@ -49,3 +49,46 @@ export const EditProfileSchema = yup.object({
   name: yup.string().required("Name is missing"),
   email: yup.string().email("Invalid email!").required("Email is missing"),
 });
+
+export const newProductSchema = yup.object().shape({
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  price: yup
+    .number()
+    .required("Price is required")
+    .positive("Price must be a positive number"),
+  publisher: yup.string().required("Publisher is required"),
+  author: yup.string().required("Author is required"),
+  stock: yup
+    .number()
+    .required("Stock is required")
+    .integer("Stock must be an integer")
+    .min(0, "Stock cannot be negative"),
+  genreId: yup
+    .number()
+    .required("Genre ID is required")
+    .integer("Genre ID must be an integer"),
+  images: yup
+    .array()
+    .of(yup.mixed().required("An image file is required"))
+    .min(1, "At least one image is required"),
+});
+
+export const updateProductSchema = yup.object().shape({
+  title: yup.string().optional(),
+  description: yup.string().optional(),
+  price: yup.number().positive("Price must be a positive number").optional(),
+  publisher: yup.string().optional(),
+  author: yup.string().optional(),
+  stock: yup
+    .number()
+    .integer("Stock must be an integer")
+    .min(0, "Stock cannot be negative")
+    .optional(),
+  genreId: yup.number().integer("Genre ID must be an integer").optional(),
+  images: yup
+    .array()
+    .of(yup.mixed().required("An image file is required"))
+    .min(1, "At least one image is required")
+    .optional(),
+});

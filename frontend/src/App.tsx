@@ -31,7 +31,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
             </Route>
             <Route element={<AdminPrivateRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<Dashboard />} />
             </Route>
           </Routes>
           <Footer />

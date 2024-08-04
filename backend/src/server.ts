@@ -38,8 +38,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/user", usersRoutes);
 app.use("/api/product", productRoutes);
-app.use("/api/product", orderRoutes);
-app.use("/api/product", reviewRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/review", reviewRoutes);
 
 app.use(errorMiddleware);
 

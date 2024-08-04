@@ -58,3 +58,42 @@ export type ApiResponseType = {
   success: boolean;
   message: string;
 };
+
+export interface ProductInput {
+  title: string;
+  description: string;
+  price: number;
+  publisher: string;
+  author: string;
+  stock: number;
+  genreId: number;
+  images: File[];
+}
+
+export interface UpdateProductInput {
+  title?: string;
+  description?: string;
+  price?: number;
+  publisher?: string;
+  author?: string;
+  stock?: number;
+  genreId?: number;
+  images?: File[];
+}
+
+export interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  publisher: string;
+  author: string;
+  stock: number;
+  genreId: number;
+  images: {
+    public_id: string;
+    secure_url: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+}

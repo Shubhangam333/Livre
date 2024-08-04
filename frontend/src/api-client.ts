@@ -6,6 +6,9 @@ import {
   Tokens,
   EditProfileFormData,
   EditAvatarFormData,
+  UpdateProductInput,
+  ProductInput,
+  Product,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -54,5 +57,65 @@ export const updateAvatar = async (
     }
   );
 
+  return response.data;
+};
+
+export const createProduct = async (
+  formData: ProductInput
+): Promise<ApiResponseType> => {
+  const formDataWithImages = new FormData();
+
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key === "images" && Array.isArray(value)) {
+      value.forEach((image) => formDataWithImages.append(key, image));
+    } else {
+      formDataWithImages.append(key, value as string | Blob);
+    }
+  });
+
+  const response = await client.post<ApiResponseType>(
+    "/product/create-product",
+    formDataWithImages,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// Update Product
+export const updateProductById = async (
+  id: string,
+  formData: UpdateProductInput
+): Promise<ApiResponseType> => {
+  const formDataWithImages = new FormData();
+
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key === "images" && Array.isArray(value)) {
+      value.forEach((image) => formDataWithImages.append(key, image));
+    } else {
+      formDataWithImages.append(key, value as string | Blob);
+    }
+  });
+
+  const response = await client.put<ApiResponseType>(
+    `/products/${id}`,
+    formDataWithImages,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// Get Product by ID
+export const getProductById = async (id: string): Promise<Product> => {
+  const response = await client.get<Product>(`/products/${id}`);
   return response.data;
 };
