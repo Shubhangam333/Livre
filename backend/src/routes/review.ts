@@ -11,7 +11,7 @@ import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createReview);
+router.post("/new/create", authMiddleware, createReview);
 router.get("/:id", authMiddleware, getReviewById);
 router.get("/", authMiddleware, getAllReviews);
 router.put("/:id", authMiddleware, updateReviewById);

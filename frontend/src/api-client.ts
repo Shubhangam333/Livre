@@ -12,6 +12,8 @@ import {
   GenreInput,
   PaginatedProductsResponse,
   Genre,
+  CreateReviewRequest,
+  Review,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -118,9 +120,9 @@ export const updateProductById = async (
 };
 
 // Get Product by ID
-export const getProductById = async (id: string): Promise<Product> => {
-  const response = await client.get<Product>(`/products/${id}`);
-  return response.data;
+export const getProductById = async (id: number): Promise<Product> => {
+  const response = await client.get<{ product: Product }>(`/product/${id}`);
+  return response.data.product;
 };
 
 export const getProducts = async (
@@ -165,5 +167,12 @@ export const updateGenreById = async (id: string, data: GenreInput) => {
 
 export const getAllGenres = async () => {
   const response = await client.get("/genre/get/all-genre");
+  return response.data;
+};
+
+export const createReview = async (
+  review: CreateReviewRequest
+): Promise<Review> => {
+  const response = await client.post<Review>("/review/new/create", review);
   return response.data;
 };

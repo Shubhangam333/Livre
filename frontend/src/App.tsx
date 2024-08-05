@@ -13,6 +13,8 @@ import { useAppContext } from "./contexts/AppContext";
 import Loading from "./ui/Loader";
 import AdminPrivateRoute from "./components/routes/AdminPrivateRoute";
 import Dashboard from "./pages/Dashboard";
+import ProductDetails from "./pages/ProductDetails";
+
 function App() {
   const { loading } = useAppContext();
   return (
@@ -27,6 +29,7 @@ function App() {
             <Route path="/sign-in" element={<Login />} />
             <Route path="/sign-up" element={<Register />} />
             <Route path="/store" element={<Store />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
             </Route>

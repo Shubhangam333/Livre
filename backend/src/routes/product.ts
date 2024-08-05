@@ -23,7 +23,7 @@ router.post(
   createProduct
 );
 
-router.get("/:id", authMiddleware, getProductById);
+router.get("/:id", getProductById);
 
 router.get("/getPaginatedProduct/all", getAllProducts);
 

@@ -78,7 +78,17 @@ export const getProductById = TryCatch(
       where: { id: Number(id) },
       include: {
         images: true,
-        reviews: true,
+        reviews: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
         genre: true,
       },
     });
@@ -87,7 +97,7 @@ export const getProductById = TryCatch(
       return next(new ErrorHandler("Product not found", 404));
     }
 
-    res.status(200).json({ success: true, product });
+    res.status(200).json({ product });
   }
 );
 
