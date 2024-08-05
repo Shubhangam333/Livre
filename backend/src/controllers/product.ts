@@ -93,15 +93,64 @@ export const getProductById = TryCatch(
 
 export const getAllProducts = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    const products = await prisma.product.findMany({
-      include: {
-        images: true,
-        reviews: true,
-        genre: true,
-      },
-    });
+    const {
+      genre,
+      minPrice,
+      maxPrice,
+      search,
+      page = 1,
+      pageSize = 10,
+    } = req.query;
 
-    res.status(200).json({ success: true, products });
+    const filters: any = {};
+
+    console.log(genre);
+
+    if (genre) {
+      filters.genre = {
+        name: {
+          contains: genre,
+        },
+      };
+    }
+
+    if (search) {
+      filters.title = {
+        contains: search,
+        // mode: "insensitive",
+      };
+    }
+
+    // Price filter
+    if (minPrice && maxPrice) {
+      filters.price = {
+        gte: Number(minPrice),
+        lte: Number(maxPrice),
+      };
+    }
+
+    const [totalProducts, products] = await Promise.all([
+      prisma.product.count({
+        where: filters,
+      }),
+      prisma.product.findMany({
+        where: filters,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        include: {
+          images: true,
+          reviews: true,
+          genre: true,
+        },
+      }),
+    ]);
+
+    res.json({
+      totalProducts,
+      products,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalProducts / Number(pageSize)),
+    });
   }
 );
 export const deleteProductById = TryCatch(

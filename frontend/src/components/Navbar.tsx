@@ -100,6 +100,13 @@ const Navbar: React.FC = () => {
                   <span className="badge">New</span>
                 </a>
               </li>
+              {user?.role == "ADMIN" && (
+                <li>
+                  <a className="justify-between" href="/admin">
+                    Admin
+                  </a>
+                </li>
+              )}
               <li onClick={handleLogout}>
                 <a>Logout</a>
               </li>

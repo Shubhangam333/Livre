@@ -4,7 +4,7 @@ import PriceFilter from "./PriceFilter";
 
 const Filters: React.FC = () => {
   return (
-    <div className="flex flex-col gap-4 flex-1">
+    <div className="flex flex-col gap-4">
       <GenreFilter />
       <PriceFilter />
     </div>

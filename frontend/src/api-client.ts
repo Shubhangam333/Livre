@@ -9,6 +9,9 @@ import {
   UpdateProductInput,
   ProductInput,
   Product,
+  GenreInput,
+  PaginatedProductsResponse,
+  Genre,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -117,5 +120,50 @@ export const updateProductById = async (
 // Get Product by ID
 export const getProductById = async (id: string): Promise<Product> => {
   const response = await client.get<Product>(`/products/${id}`);
+  return response.data;
+};
+
+export const getProducts = async (
+  page: number,
+  pageSize: number,
+  genre?: string,
+  priceRange?: [number, number],
+  search?: string
+): Promise<PaginatedProductsResponse> => {
+  const response = await client.get<PaginatedProductsResponse>(
+    "/product/getPaginatedProduct/all",
+    {
+      params: {
+        page,
+        pageSize,
+        genre,
+        minPrice: priceRange?.[0],
+        maxPrice: priceRange?.[1],
+        search,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const createGenre = async (
+  data: GenreInput
+): Promise<ApiResponseType> => {
+  const response = await client.post<ApiResponseType>("/genre/create", data);
+  return response.data;
+};
+
+export const getGenreById = async (id: string): Promise<Genre> => {
+  const response = await client.get<Genre>(`/genre/${id}`);
+  return response.data;
+};
+
+export const updateGenreById = async (id: string, data: GenreInput) => {
+  const response = await client.put(`/genre/${id}`, data);
+  return response.data;
+};
+
+export const getAllGenres = async () => {
+  const response = await client.get("/genre/get/all-genre");
   return response.data;
 };

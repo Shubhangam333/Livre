@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CreateProduct from "../components/Admin/CreateProduct";
 import UpdateProduct from "../components/Admin/UpdateProduct";
+import CreateGenre from "../components/Admin/CreateGenre";
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const Dashboard: React.FC = () => {
       <div className="drawer-content flex flex-col items-center justify-center">
         {tab == "create-product" && <CreateProduct />}
         {tab == "update-product" && <UpdateProduct />}
+        {tab == "create-genre" && <CreateGenre />}
       </div>
       <div className="drawer-side">
         <label
@@ -35,6 +37,9 @@ const Dashboard: React.FC = () => {
           </li>
           <li>
             <Link to="/admin?tab=create-product">Add Product</Link>
+          </li>
+          <li>
+            <Link to="/admin?tab=create-genre">Genre</Link>
           </li>
         </ul>
       </div>

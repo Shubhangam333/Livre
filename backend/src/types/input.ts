@@ -46,3 +46,7 @@ export type ReviewInput = {
   productId: number;
   rating: number;
 };
+
+export type GenreInput = {
+  name: string;
+};

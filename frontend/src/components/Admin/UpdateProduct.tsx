@@ -6,16 +6,16 @@ import React, {
   useState,
 } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as apiClient from "../../api-client";
 import { yupValidate } from "../../utils/validator";
 import { showErrorMessage } from "../../utils/showErrorMessage";
-import { ProductInput, Genre } from "../../types";
-import { newProductSchema } from "../../utils/validator";
-import Loading from "../../ui/Loader";
+import { ProductInput, Product } from "../../types";
+import { updateProductSchema } from "../../utils/validator";
 
-const CreateProduct: React.FC = () => {
+const UpdateProduct: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<ProductInput>({
     title: "",
     description: "",
@@ -24,20 +24,37 @@ const CreateProduct: React.FC = () => {
     author: "",
     stock: 0,
     genreId: 0,
-    images: [],
+    images: [], // Assuming images is an array of file objects
   });
 
   const navigate = useNavigate();
 
-  const { data: genres, isLoading } = useQuery({
-    queryKey: ["genres"],
-    queryFn: apiClient.getAllGenres,
+  const { data: existingProduct, isLoading } = useQuery<Product>({
+    queryKey: ["product", id],
+    queryFn: () => apiClient.getProductById(id!),
+    enabled: !!id,
+    onSuccess: (data: Product) => {
+      setFormData({
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        publisher: data.publisher,
+        author: data.author,
+        stock: data.stock,
+        genreId: data.genreId,
+        images: [], // or process existingProduct.images if necessary
+      });
+    },
+    onError: (error) => {
+      showErrorMessage(error);
+    },
   });
 
   const mutation = useMutation({
-    mutationFn: (data: ProductInput) => apiClient.createProduct(data),
-    onSuccess: (d) => {
-      toast.success(d.message);
+    mutationFn: (data: ProductInput) => apiClient.updateProductById(id!, data),
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate("/products");
     },
     onError: (error: Error) => {
       showErrorMessage(error);
@@ -49,18 +66,19 @@ const CreateProduct: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    const { values, error } = await yupValidate(newProductSchema, formData);
+    const { values, error } = await yupValidate(updateProductSchema, formData);
 
-    if (error) return toast.error(error);
+    if (error) {
+      toast.error(error);
+      return;
+    }
 
     if (values) {
       mutation.mutate(values);
     }
   };
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -78,13 +96,17 @@ const CreateProduct: React.FC = () => {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <div>Loading...</div>;
+  }
+
+  if (!existingProduct) {
+    return <div>Product not found</div>;
   }
 
   return (
-    <div className="bg-base-200 min-h-screen flex p-24 justify-center">
+    <div className="bg-base-200 min-h-screen flex p-24 justify-center ">
       <form className="w-72 flex flex-col gap-4" onSubmit={handleSubmit}>
-        <h1 className="text-4xl text-center">Create Product</h1>
+        <h1 className="text-4xl text-center">Update Product</h1>
         <label className="input input-bordered flex items-center gap-2">
           <input
             type="text"
@@ -152,22 +174,15 @@ const CreateProduct: React.FC = () => {
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">
-          <select
+          <input
+            type="number"
             className="grow"
+            placeholder="Genre ID"
             id="genreId"
             name="genreId"
             value={formData.genreId}
             onChange={handleChange}
-          >
-            <option value="" disabled>
-              Select Genre
-            </option>
-            {genres.genres.map((genre: Genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </select>
+          />
         </label>
         <label className="input input-bordered flex items-center gap-2">
           <input
@@ -181,10 +196,9 @@ const CreateProduct: React.FC = () => {
           />
         </label>
         <button className="btn btn-primary">Submit</button>
-        {mutation.isPending && <Loading />}
       </form>
     </div>
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

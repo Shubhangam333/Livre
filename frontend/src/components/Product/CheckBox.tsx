@@ -1,15 +1,26 @@
 import React from "react";
 
-const CheckBox: React.FC = () => {
+type CheckBoxProps = {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const CheckBox: React.FC<CheckBoxProps> = ({ value, onChange }) => {
   return (
     <>
       <div className="form-control ">
-        <label className="label cursor-pointer flex justify-between items-center">
-          <span className="label-text">Remember me</span>
+        <label
+          className="label cursor-pointer flex justify-between items-center"
+          htmlFor={value}
+        >
+          <span className="label-text">{value}</span>
           <input
-            type="checkbox"
-            defaultChecked
-            className="checkbox checkbox-primary"
+            type="radio"
+            value={value}
+            onChange={onChange}
+            name={value}
+            // className="cy"
+            className="radio radio-primary"
           />
         </label>
       </div>

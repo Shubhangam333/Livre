@@ -1,5 +1,6 @@
 import React from "react";
 import hero from "/hero.png";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   return (
@@ -15,9 +16,12 @@ const Hero: React.FC = () => {
             Discover a World of Books at Our Online Bookstore – From Bestsellers
             to Classics, Find Your Next Great Read
           </p>
-          <button className="btn btn-primary rounded-lg sm:w-full lg:w-44">
+          <Link
+            to="/store"
+            className="btn btn-primary rounded-lg sm:w-full lg:w-44"
+          >
             Shop Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

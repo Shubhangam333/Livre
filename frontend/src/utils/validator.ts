@@ -92,3 +92,7 @@ export const updateProductSchema = yup.object().shape({
     .min(1, "At least one image is required")
     .optional(),
 });
+
+export const genreSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+});

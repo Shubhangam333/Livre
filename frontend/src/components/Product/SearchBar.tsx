@@ -1,10 +1,22 @@
 import React from "react";
+import { useFilter } from "../../contexts/FilterContext";
 
 const SearchBar: React.FC = () => {
+  const { search, setSearch } = useFilter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
   return (
     <>
       <label className="input input-bordered flex items-center gap-2">
-        <input type="text" className="grow" placeholder="Search" />
+        <input
+          type="text"
+          className="grow"
+          placeholder="Search"
+          value={search}
+          onChange={handleChange}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"

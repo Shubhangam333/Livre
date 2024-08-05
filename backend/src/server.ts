@@ -6,6 +6,7 @@ import usersRoutes from "./routes/users";
 import productRoutes from "./routes/product";
 import reviewRoutes from "./routes/review";
 import orderRoutes from "./routes/order";
+import genreRoutes from "./routes/genre";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import { errorMiddleware } from "./middleware/error";
@@ -40,6 +41,7 @@ app.use("/api/user", usersRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/review", reviewRoutes);
+app.use("/api/genre", genreRoutes);
 
 app.use(errorMiddleware);
 

@@ -23,17 +23,12 @@ router.post(
   createProduct
 );
 
-router.get("/product/:id", authMiddleware, getProductById);
+router.get("/:id", authMiddleware, getProductById);
 
-router.get("/product/all", authMiddleware, getAllProducts);
+router.get("/getPaginatedProduct/all", getAllProducts);
 
-router.delete(
-  "/product/:id",
-  authMiddleware,
-  checkAdminRole,
-  deleteProductById
-);
+router.delete("/:id", authMiddleware, checkAdminRole, deleteProductById);
 
-router.put("/product/:id", authMiddleware, checkAdminRole, updateProductById);
+router.put("/:id", authMiddleware, checkAdminRole, updateProductById);
 
 export default router;

@@ -97,3 +97,44 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+export interface GenreInput {
+  name: string;
+}
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface Review {
+  id: number;
+  comment: string;
+  userId: number;
+  productId: number;
+  rating?: number;
+  user: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface PaginatedProductsResponse {
+  success: boolean;
+  products: Product[];
+  totalProducts: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+export interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  publisher: string;
+  author: string;
+  stock: number;
+  genreId: number;
+  images: { secure_url: string; public_id: string }[];
+  genre: { id: number; name: string };
+  reviews: Review[];
+}
