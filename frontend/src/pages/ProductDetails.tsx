@@ -8,12 +8,15 @@ import { toast } from "react-toastify";
 import { showErrorMessage } from "../utils/showErrorMessage";
 import { Carousel } from "react-responsive-carousel";
 import { useProfile } from "../hooks/useProfile";
+import { useCart } from "../contexts/CartContext";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const productId = id ? parseInt(id, 10) : 0;
   const queryClient = useQueryClient();
   const { data: user } = useProfile();
+
+  const { addToCart } = useCart();
 
   // Query to fetch product data
   const { data, isLoading, error } = useQuery<Product>({
@@ -55,6 +58,22 @@ const ProductDetails: React.FC = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const handleCart = () => {
+    if (data && data.stock > 0) {
+      addToCart({
+        id: data.id,
+        title: data.title,
+        price: data.price,
+        quantity: 1,
+        stock: data.stock,
+        image: data.images[0]?.secure_url,
+      });
+      toast.success("Item added");
+    } else {
+      toast.error("Sorry, this product is out of stock.");
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row  shadow-lg rounded-lg overflow-hidden">
@@ -65,7 +84,7 @@ const ProductDetails: React.FC = () => {
                 key={image.public_id}
                 src={image.secure_url}
                 alt={data.title}
-                className="w-full h-full object-cover"
+                className="w-full h-96 object-cover"
               />
             ))}
           </Carousel>
@@ -83,7 +102,10 @@ const ProductDetails: React.FC = () => {
             <p className="">Stock: {data?.stock}</p>
           </div>
           {data?.stock > 0 ? (
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+              onClick={handleCart}
+            >
               Buy Now
             </button>
           ) : (

@@ -8,6 +8,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppContextProvider } from "./contexts/AppContext.tsx";
+import { CartProvider } from "./contexts/CartContext.tsx";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,11 +24,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AppContextProvider>
-        <div className="min-h-screen flex flex-col">
-          <App />
-          <ToastContainer />
-        </div>
-
+        <CartProvider>
+          <div className="min-h-screen flex flex-col">
+            <App />
+            <ToastContainer />
+          </div>
+        </CartProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </AppContextProvider>
     </QueryClientProvider>

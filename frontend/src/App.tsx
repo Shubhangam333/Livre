@@ -14,6 +14,8 @@ import Loading from "./ui/Loader";
 import AdminPrivateRoute from "./components/routes/AdminPrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./pages/ProductDetails";
+import CartPage from "./pages/CartPage";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const { loading } = useAppContext();
@@ -30,6 +32,8 @@ function App() {
             <Route path="/sign-up" element={<Register />} />
             <Route path="/store" element={<Store />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
             </Route>
