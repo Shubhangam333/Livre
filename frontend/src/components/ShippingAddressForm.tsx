@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Address } from "../types";
+import { Address, AddressInput } from "../types";
 
 interface ShippingAddressFormProps {
   onSave: (address: Address) => void;
@@ -8,7 +8,7 @@ interface ShippingAddressFormProps {
 const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
   onSave,
 }) => {
-  const [address, setAddress] = useState<Address>({
+  const [address, setAddress] = useState<AddressInput>({
     street: "",
     city: "",
     state: "",
@@ -32,7 +32,7 @@ const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       <div className="mb-4">
-        <label className="block text-gray-700">Street</label>
+        <label className="block ">Street</label>
         <input
           type="text"
           name="street"
@@ -43,7 +43,7 @@ const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700">City</label>
+        <label className="block ">City</label>
         <input
           type="text"
           name="city"
@@ -54,7 +54,7 @@ const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700">State</label>
+        <label className="block ">State</label>
         <input
           type="text"
           name="state"
@@ -65,7 +65,7 @@ const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700">Zip Code</label>
+        <label className="block ">Zip Code</label>
         <input
           type="text"
           name="zipCode"
@@ -76,7 +76,7 @@ const ShippingAddressForm: React.FC<ShippingAddressFormProps> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700">Country</label>
+        <label className="block ">Country</label>
         <input
           type="text"
           name="country"

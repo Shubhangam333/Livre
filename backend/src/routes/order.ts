@@ -10,7 +10,7 @@ import { authMiddleware, checkAdminRole } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createOrder);
+router.post("/new/create", authMiddleware, createOrder);
 router.get("/:id", authMiddleware, getOrderById);
 router.get("/", authMiddleware, checkAdminRole, getAllOrders);
 router.put("/:id", authMiddleware, checkAdminRole, updateOrderById);

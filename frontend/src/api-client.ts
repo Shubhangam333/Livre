@@ -14,6 +14,12 @@ import {
   Genre,
   CreateReviewRequest,
   Review,
+  VerifyPaymentRequest,
+  OrderInput,
+  Order,
+  Address,
+  AddressInput,
+  GetAddressesResponse,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -175,4 +181,45 @@ export const createReview = async (
 ): Promise<Review> => {
   const response = await client.post<Review>("/review/new/create", review);
   return response.data;
+};
+
+export const verifyPayment = async (
+  data: VerifyPaymentRequest
+): Promise<ApiResponseType> => {
+  const response = await client.post("/payment/verify-payment", data);
+  return response.data;
+};
+
+export const createOrder = async (order: OrderInput): Promise<Order> => {
+  const response = await client.post<Order>("/order/new/create", order);
+  return response.data;
+};
+
+export const createAddress = async (
+  address: AddressInput
+): Promise<Address> => {
+  const response = await client.post<Address>("/address/new/create", address);
+  return response.data;
+};
+
+export const updateAddress = async (
+  id: number,
+  address: Partial<AddressInput>
+): Promise<Address> => {
+  const response = await client.put<Address>(`/address/${id}`, address);
+  return response.data;
+};
+
+export const deleteAddress = async (
+  id: number
+): Promise<{ success: boolean; message: string }> => {
+  const response = await client.delete<{ success: boolean; message: string }>(
+    `/address/${id}`
+  );
+  return response.data;
+};
+
+export const getAddresses = async (): Promise<Address[]> => {
+  const response = await client.get<GetAddressesResponse>("/address/addresses");
+  return response.data.addresses;
 };

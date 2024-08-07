@@ -169,3 +169,63 @@ export interface Address {
   zipCode: string;
   country: string;
 }
+
+export interface VerifyPaymentRequest {
+  orderID: string;
+}
+
+export type OrderInput = {
+  userId: number;
+  totalAmount: number;
+  paymentStatus: "pending" | "succeeded" | "cancelled" | "refund";
+  paymentType: "cod" | "card";
+  couponCode?: string;
+  couponValue?: number;
+  addressId?: number;
+  items: {
+    productId: string;
+    payablePrice: number;
+    purchasedQty: number;
+  }[];
+  orderStatus: {
+    type: "ordered" | "packed" | "shipped" | "delivered";
+    date?: Date;
+    isCompleted?: boolean;
+  }[];
+};
+
+export interface Order {
+  id: number;
+  userId: number;
+  totalAmount: number;
+  paymentStatus: string;
+  paymentType: string;
+  couponCode?: string;
+  couponValue?: number;
+  addressId: number;
+  items: Array<{ productId: number; quantity: number }>;
+  orderStatus: { status: string; updatedAt: Date }[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface Address {
+  id: number;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
+export interface AddressInput {
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
+export interface GetAddressesResponse {
+  success: boolean;
+  addresses: Address[];
+}

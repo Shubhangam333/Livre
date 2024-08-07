@@ -11,7 +11,7 @@ const CartPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-primary-content">
+      <h1 className="text-2xl font-bold mb-4 text-primary-content text-center">
         Shopping Cart
       </h1>
       {items.length === 0 ? (
