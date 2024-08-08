@@ -229,3 +229,17 @@ export interface GetAddressesResponse {
   success: boolean;
   addresses: Address[];
 }
+
+// resposne for user orders
+
+export interface GetUserOrdersResponse {
+  success: boolean;
+  orders: {
+    id: string;
+    totalamount: number;
+    paymentStatus: string;
+    createdAt: Date;
+  };
+  currentPage: number;
+  totalPages: number;
+}

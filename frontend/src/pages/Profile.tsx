@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import UserProfile from "../components/UserProfile";
+import UserProfile from "../components/Profile/UserProfile";
 import { Link, useLocation } from "react-router-dom";
-import UserAvatar from "../components/UserAvatar";
+import UserAvatar from "../components/Profile/UserAvatar";
+import UserOrders from "../components/Profile/UserOrders";
+import { useProfile } from "../hooks/useProfile";
 
 const Profile: React.FC = () => {
   const location = useLocation();
   const [tab, setTab] = useState<string>("");
+  const { data: user } = useProfile();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -21,6 +24,7 @@ const Profile: React.FC = () => {
       <div className="drawer-content flex flex-col items-center justify-center">
         {tab == "user" && <UserProfile />}
         {tab == "avatar" && <UserAvatar />}
+        {tab == "orders" && user && <UserOrders userId={user.id} />}
       </div>
       <div className="drawer-side">
         <label
@@ -36,6 +40,9 @@ const Profile: React.FC = () => {
           </li>
           <li>
             <Link to="/profile?tab=avatar">Avatar</Link>
+          </li>
+          <li>
+            <Link to="/profile?tab=orders">Orders</Link>
           </li>
         </ul>
       </div>

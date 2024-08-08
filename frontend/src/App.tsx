@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./pages/ProductDetails";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
+import OrderDetails from "./components/Profile/OrderDetails";
 
 function App() {
   const { loading } = useAppContext();
@@ -36,6 +37,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
+              <Route path="/orders/:orderId" element={<OrderDetails />} />
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<Dashboard />} />

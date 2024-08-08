@@ -20,6 +20,7 @@ import {
   Address,
   AddressInput,
   GetAddressesResponse,
+  GetUserOrdersResponse,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -222,4 +223,20 @@ export const deleteAddress = async (
 export const getAddresses = async (): Promise<Address[]> => {
   const response = await client.get<GetAddressesResponse>("/address/addresses");
   return response.data.addresses;
+};
+
+export const getUserOrders = async (
+  userId: number,
+  page: number = 1,
+  limit: number = 10
+): Promise<GetUserOrdersResponse> => {
+  const response = await client.get<GetUserOrdersResponse>(
+    `/order/user/${userId}?page=${page}&limit=${limit}`
+  );
+  return response.data;
+};
+
+export const getOrderById = async (orderId: number) => {
+  const response = await client.get(`/order/${orderId}`);
+  return response.data.order;
 };
