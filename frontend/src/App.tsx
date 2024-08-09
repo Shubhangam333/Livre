@@ -17,6 +17,8 @@ import ProductDetails from "./pages/ProductDetails";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import OrderDetails from "./components/Profile/OrderDetails";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import PaymentFailPage from "./pages/PaymentFailPage";
 
 function App() {
   const { loading } = useAppContext();
@@ -38,6 +40,8 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/orders/:orderId" element={<OrderDetails />} />
+              <Route path="/payment-success" element={<PaymentSuccessPage />} />
+              <Route path="/payment-fail" element={<PaymentFailPage />} />
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<Dashboard />} />

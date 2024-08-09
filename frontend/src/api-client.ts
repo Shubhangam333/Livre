@@ -228,7 +228,7 @@ export const getAddresses = async (): Promise<Address[]> => {
 export const getUserOrders = async (
   userId: number,
   page: number = 1,
-  limit: number = 10
+  limit: number = 5
 ): Promise<GetUserOrdersResponse> => {
   const response = await client.get<GetUserOrdersResponse>(
     `/order/user/${userId}?page=${page}&limit=${limit}`

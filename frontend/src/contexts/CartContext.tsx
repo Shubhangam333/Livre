@@ -20,6 +20,7 @@ interface CartContextType {
   addToCart: (item: CartItem) => void;
   updateQuantity: (id: string, quantity: number) => void;
   removeFromCart: (id: string) => void;
+  clearCart: () => void;
   itemCount: number;
   subtotal: number;
 }
@@ -60,6 +61,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  const clearCart = () => {
+    setItems([]); // Clear items from state
+    localStorage.removeItem("cartItems"); // Remove items from localStorage
+  };
+
   const itemCount = items.reduce((count, item) => count + item.quantity, 0);
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -73,6 +79,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         updateQuantity,
         removeFromCart,
+        clearCart,
         itemCount,
         subtotal,
       }}

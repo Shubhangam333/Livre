@@ -14,9 +14,11 @@ import { showErrorMessage } from "../utils/showErrorMessage";
 import { OnApproveData } from "@paypal/paypal-js";
 import { useProfile } from "../hooks/useProfile";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Checkout: React.FC = () => {
-  const { items, subtotal } = useCart();
+  const { items, subtotal, clearCart, itemCount } = useCart();
+  const navigate = useNavigate();
   const { data: user } = useProfile();
   const [address, setAddress] = useState<Address | null>(null);
 
@@ -50,7 +52,6 @@ const Checkout: React.FC = () => {
     mutationFn: (data: VerifyPaymentRequest) => apiClient.verifyPayment(data),
     onSuccess: (data) => {
       if (!user) return;
-      console.log("Payment verified:", data);
 
       const orderInput: OrderInput = {
         userId: user?.id,
@@ -82,10 +83,14 @@ const Checkout: React.FC = () => {
   const createOrderMutation = useMutation({
     mutationFn: (data: OrderInput) => apiClient.createOrder(data),
     onSuccess: (data) => {
+      clearCart();
       toast.success("Payment Succesfull");
+      sessionStorage.setItem("paymentSuccess", "true");
+      navigate("/payment-success");
     },
     onError: (error) => {
       showErrorMessage(error);
+      navigate("/payment-fail");
     },
   });
 
@@ -94,10 +99,15 @@ const Checkout: React.FC = () => {
       verifyPaymentMutation.mutate({ orderID: data.orderID });
     } else {
       toast.error("Something went wrong");
+      navigate("/payment-fail");
     }
   };
 
-  if (!user) return null;
+  useEffect(() => {
+    if (itemCount == 0 || !user) {
+      navigate("/");
+    }
+  }, [itemCount, navigate, user]);
 
   return (
     <div className="container mx-auto p-4">
@@ -134,6 +144,7 @@ const Checkout: React.FC = () => {
             </div>
           )}
           <div className="mt-4">
+            z{" "}
             {addresses && addresses?.length > 0 && (
               <PayPalButton
                 amount={subtotal}
