@@ -56,16 +56,6 @@ export const getOrderById = TryCatch(
   }
 );
 
-export const getAllOrders = TryCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const orders = await prisma.order.findMany({
-      include: { items: true, orderStatus: true, address: true },
-    });
-
-    res.status(200).json({ success: true, orders });
-  }
-);
-
 export const updateOrderById = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -138,6 +128,35 @@ export const getUserOrders = TryCatch(
       prisma.order.count({
         where: { userId },
       }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      orders,
+      currentPage: page,
+      totalPages: Math.ceil(totalOrders / limit),
+    });
+  }
+);
+
+export const getAllOrders = TryCatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const [orders, totalOrders] = await Promise.all([
+      prisma.order.findMany({
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          totalAmount: true,
+          paymentStatus: true,
+          createdAt: true,
+        },
+      }),
+      prisma.order.count(),
     ]);
 
     res.status(200).json({

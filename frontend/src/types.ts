@@ -243,3 +243,24 @@ export interface GetUserOrdersResponse {
   currentPage: number;
   totalPages: number;
 }
+
+export interface GetAllUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: {
+    url: string;
+  };
+}
+
+export interface GetAllUsersResponse {
+  success: boolean;
+  users: GetAllUser[];
+  currentPage: number;
+  totalPages: number;
+}
+export interface GetUserDetailsById {
+  success: boolean;
+  user: GetAllUser;
+}

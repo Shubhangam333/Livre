@@ -149,8 +149,6 @@ export const getAllProducts = TryCatch(
         take: Number(pageSize),
         include: {
           images: true,
-          reviews: true,
-          genre: true,
         },
       }),
     ]);

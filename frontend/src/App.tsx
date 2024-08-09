@@ -19,6 +19,7 @@ import Checkout from "./pages/Checkout";
 import OrderDetails from "./components/Profile/OrderDetails";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentFailPage from "./pages/PaymentFailPage";
+import UserDetails from "./components/Admin/UserDetails";
 
 function App() {
   const { loading } = useAppContext();
@@ -45,6 +46,7 @@ function App() {
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<Dashboard />} />
+              <Route path="/users/:userId" element={<UserDetails />} />
             </Route>
           </Routes>
           <Footer />

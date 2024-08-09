@@ -21,6 +21,9 @@ import {
   AddressInput,
   GetAddressesResponse,
   GetUserOrdersResponse,
+  GetAllUsersResponse,
+  GetAllUser,
+  GetUserDetailsById,
 } from "./types";
 import { client } from "./utils/client";
 
@@ -239,4 +242,28 @@ export const getUserOrders = async (
 export const getOrderById = async (orderId: number) => {
   const response = await client.get(`/order/${orderId}`);
   return response.data.order;
+};
+export const getAllOrders = async (
+  page: number = 1,
+  limit: number = 5
+): Promise<GetUserOrdersResponse> => {
+  const response = await client.get<GetUserOrdersResponse>(
+    `/order/all/all-orders?page=${page}&limit=${limit}`
+  );
+  return response.data;
+};
+
+export const getAllUsers = async (
+  page: number = 1,
+  limit: number = 5
+): Promise<GetAllUsersResponse> => {
+  const response = await client.get<GetAllUsersResponse>(
+    `/user/all/all-users?page=${page}&limit=${limit}`
+  );
+  return response.data;
+};
+
+export const getUserById = async (userId: number): Promise<GetAllUser> => {
+  const response = await client.get<GetUserDetailsById>(`/user/get/${userId}`);
+  return response.data.user;
 };
