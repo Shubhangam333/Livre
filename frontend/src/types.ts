@@ -131,9 +131,21 @@ export interface Review {
   };
 }
 
+export interface getProductResponse {
+  id: number;
+  title: string;
+  price: number;
+  publisher: string;
+  author: string;
+  images: {
+    public_id: string;
+    secure_url: string;
+  }[];
+}
+
 export interface PaginatedProductsResponse {
   success: boolean;
-  products: Product[];
+  products: getProductResponse[];
   totalProducts: number;
   totalPages: number;
   currentPage: number;

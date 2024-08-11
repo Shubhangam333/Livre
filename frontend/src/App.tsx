@@ -20,6 +20,7 @@ import OrderDetails from "./components/Profile/OrderDetails";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentFailPage from "./pages/PaymentFailPage";
 import UserDetails from "./components/Admin/UserDetails";
+import AdminProductDetails from "./components/Admin/AdminProductDetails";
 
 function App() {
   const { loading } = useAppContext();
@@ -47,6 +48,10 @@ function App() {
             <Route element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<Dashboard />} />
               <Route path="/users/:userId" element={<UserDetails />} />
+              <Route
+                path="/products/admin/:productId"
+                element={<AdminProductDetails />}
+              />
             </Route>
           </Routes>
           <Footer />

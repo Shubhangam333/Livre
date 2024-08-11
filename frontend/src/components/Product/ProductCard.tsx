@@ -42,9 +42,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{product.title}</h2>
+        <div className="flex justify-between items-center w-full">
+          <h2 className="card-title">{product.title}</h2>
+          <p className="text-xl">${product.price}</p>
+        </div>
         <div className="card-actions ">
-          <button className="btn btn-primary w-full">Buy Now</button>
           <button
             className="btn btn-success text-white w-full"
             onClick={handleCart}

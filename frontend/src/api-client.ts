@@ -158,6 +158,11 @@ export const getProducts = async (
   return response.data;
 };
 
+export const getAdminProductById = async (id: number): Promise<Product> => {
+  const response = await client.get<Product>(`/product/admin/${id}`);
+  return response.data;
+};
+
 export const createGenre = async (
   data: GenreInput
 ): Promise<ApiResponseType> => {

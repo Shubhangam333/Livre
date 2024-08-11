@@ -3,6 +3,7 @@ import { authMiddleware, checkAdminRole } from "../middleware/authMiddleware";
 import {
   createProduct,
   deleteProductById,
+  getAdminProductById,
   getAllProducts,
   getProductById,
   updateProductById,
@@ -27,8 +28,10 @@ router.get("/:id", getProductById);
 
 router.get("/getPaginatedProduct/all", getAllProducts);
 
-router.delete("/:id", authMiddleware, checkAdminRole, deleteProductById);
+router.delete("/admin/:id", authMiddleware, checkAdminRole, deleteProductById);
 
-router.put("/:id", authMiddleware, checkAdminRole, updateProductById);
+router.get("/admin/:id", authMiddleware, checkAdminRole, getAdminProductById);
+
+router.put("/admin/:id", authMiddleware, checkAdminRole, updateProductById);
 
 export default router;

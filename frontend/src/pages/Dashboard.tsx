@@ -5,6 +5,7 @@ import UpdateProduct from "../components/Admin/UpdateProduct";
 import CreateGenre from "../components/Admin/CreateGenre";
 import AdminOrders from "../components/Admin/AdminOrders";
 import AdminUsers from "../components/Admin/AdminUsers";
+import AdminProducts from "../components/Admin/AdminProducts";
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ const Dashboard: React.FC = () => {
         {tab == "create-genre" && <CreateGenre />}
         {tab == "all-orders" && <AdminOrders />}
         {tab == "all-users" && <AdminUsers />}
+        {tab == "all-products" && <AdminProducts />}
       </div>
       <div className="drawer-side">
         <label
@@ -50,6 +52,9 @@ const Dashboard: React.FC = () => {
           </li>
           <li>
             <Link to="/admin?tab=all-users">Users</Link>
+          </li>
+          <li>
+            <Link to="/admin?tab=all-products">Products</Link>
           </li>
         </ul>
       </div>

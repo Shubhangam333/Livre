@@ -114,8 +114,6 @@ export const getAllProducts = TryCatch(
 
     const filters: any = {};
 
-    console.log(genre);
-
     if (genre) {
       filters.genre = {
         name: {
@@ -127,7 +125,6 @@ export const getAllProducts = TryCatch(
     if (search) {
       filters.title = {
         contains: search,
-        // mode: "insensitive",
       };
     }
 
@@ -147,8 +144,13 @@ export const getAllProducts = TryCatch(
         where: filters,
         skip: (Number(page) - 1) * Number(pageSize),
         take: Number(pageSize),
-        include: {
+        select: {
+          title: true,
+          price: true,
           images: true,
+          author: true,
+          publisher: true,
+          id: true,
         },
       }),
     ]);
@@ -161,6 +163,7 @@ export const getAllProducts = TryCatch(
     });
   }
 );
+
 export const deleteProductById = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -260,5 +263,28 @@ export const updateProductById = TryCatch(
     });
 
     res.status(200).json({ success: true, product: updatedProduct });
+  }
+);
+
+export const getAdminProductById = TryCatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        images: true,
+        genre: true,
+        reviews: true,
+      },
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
   }
 );
